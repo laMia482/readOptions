@@ -1,0 +1,31 @@
+//************************************************
+//  file name:     README                        
+//  aim:           show messages to get started  
+//  create time:   Y2017M08D15
+//**********************************************/
+
+create a class named ReadOptions to: 
+
+readPermitted(void): 
+	confrim if open the file successfully 
+
+read(const char *option): 
+	read value of a certain param 
+
+getNxet(void):
+	seek for next line
+	
+readOption(void):
+	return the option for the current line
+	
+readVal(void):
+	read the value for the current line
+	
+
+//*************************************************
+//  limit:         now only support the format of 
+//                 A = 0.6
+//                 B = good
+//                 C = /path/example.file
+//  ro be continued
+//************************************************/
