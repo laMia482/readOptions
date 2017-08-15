@@ -32,6 +32,8 @@ ReadOptions::ReadOptions(const char *fileName)
 	else
 		m_bPermitted = true;
 	
+	fclose(pFile);
+	
 	m_pString = new char[m_Length];
 	m_pOption = new char[m_Length];
 	m_pVal = new char[m_Length];
@@ -52,8 +54,6 @@ ReadOptions::ReadOptions(const char *fileName)
 
 ReadOptions::~ReadOptions(void)
 {
-	if(m_bPermitted)
-		fclose((FILE*)m_pFile);
 	if(NULL != m_pString)
 	{
 		delete m_pString;
@@ -87,61 +87,56 @@ char *ReadOptions::read(const char *option)
 		m_bPermitted = false;
 		return m_pVal;
 	}
-	
+	m_pFile = (void*)pFile;
 	while(!feof(pFile))
 	{
-	NEXT_LINE:
-		// get a line
-		fgets(m_pString, m_Length-1, pFile);
-		// LOG(INFO) << "str-> " << str;
-		// LOG(INFO) << ++m_Line;
-		for(int i=0;i<strlen(m_pString);++i)
-		{
-			// skip if space in the front so that get option
-			if(m_pString[i] == ' ')
-				continue;
-			memset(m_pOption, 0, m_Length*sizeof(char));
-			memcpy(m_pOption, &m_pString[i], strlen(option)*sizeof(char));
-			// LOG(INFO) << "m_pOption-> " << m_pOption;
-			if(strcmp(m_pOption, option))
-			{
-				// LOG(INFO) << "Not match";
-				goto NEXT_LINE;
-			}
-			// skip if space in the front so that get value
-			m_SepIndex = i+1+strlen(option);
-			for(i=m_SepIndex;i<strlen(m_pString);++i)
-			{
-				if(m_pString[i] == ' ' || m_pString[i] == '=')
-					continue;
-				memset(m_pVal, 0, m_Length*sizeof(char));
-				memcpy(m_pVal, &m_pString[i], m_Length);
-				// LOG(INFO) << "m_pVal-> " << m_pVal;
-				goto END_OF_FILE;
-			}
-		}
-		
-		// LOG(INFO) << "m_pOption: " << m_pOption << ",  m_pVal: " << m_pVal;
-		goto END_OF_FILE;;
+		getNext();
+		if(!readOption(option))
+			continue;
+		readVal();
+		break;
 	}
-END_OF_FILE:
 	fclose(pFile);
 	return m_pVal;
 }
 
-bool *ReadOptions::getNext(void)
+void ReadOptions::getNext(void)
 {
-
+	fgets(m_pString, m_Length-1, (FILE*)m_pFile);
 }
 
-char *ReadOptions::readOption(void)
+bool ReadOptions::readOption(const char *option)
 {
-
+	for(int i=0;i<strlen(m_pString);++i)
+	{
+		// skip if space in the front so that get option
+		if(m_pString[i] == ' ')
+			continue;
+		memset(m_pOption, 0, m_Length*sizeof(char));
+		memcpy(m_pOption, &m_pString[i], strlen(option)*sizeof(char));
+		// LOG(INFO) << "m_pOption-> " << m_pOption;
+		if(strcmp(m_pOption, option))
+		{
+			// LOG(INFO) << "Not match";
+			return false;
+		}
+		// skip if space in the front so that get value
+		m_SepIndex = i+1+strlen(option);
+		return true;
+	}
+	return false;
 }
 
-char *ReadOptions::readVal(void)
+void ReadOptions::readVal(void)
 {
-	
+	for(int i=m_SepIndex;i<strlen(m_pString);++i)
+	{
+		if(m_pString[i] == ' ' || m_pString[i] == '=')
+			continue;
+		memset(m_pVal, 0, m_Length*sizeof(char));
+		memcpy(m_pVal, &m_pString[i], m_Length);
+		break;
+	}
 }
 
 #endif // READ_OPTIONS_H_

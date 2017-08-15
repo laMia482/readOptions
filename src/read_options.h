@@ -8,11 +8,11 @@ public:
 	~ReadOptions(void);
 	bool readPermitted(void);
 	char *read(const char *);
-	bool *getNext(void);
-	char *readOption(void);
-	char *readVal(void);
-	
 private:
+	void getNext(void);
+	bool readOption(const char *);
+	void readVal(void);
+	
 	void *m_pFile;
 	char *m_pFileName;
 	char *m_pString;
