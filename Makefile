@@ -50,4 +50,4 @@ make_dir:
 	mkdir -p $(BIN_DIR) $(OBJS_DIR) $(GEN_DIR)
 
 clean:
-	rm -rf $(OBJS) $(EXE) $(BIN_DIR) $(OBJS_DIR) $(GEN_DIR)
+	rm -rf $(BIN_DIR) $(OBJS_DIR) $(GEN_DIR)

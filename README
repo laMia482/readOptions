@@ -22,10 +22,13 @@ readVal(void):
 	read the value for the current line
 	
 
+usage in main.cc
+	
+	
 //*************************************************
 //  limit:         now only support the format of 
 //                 A = 0.6
 //                 B = good
 //                 C = /path/example.file
-//  ro be continued
+//  to be continued
 //************************************************/

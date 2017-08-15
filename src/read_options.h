@@ -8,17 +8,19 @@ public:
 	~ReadOptions(void);
 	bool readPermitted(void);
 	char *read(const char *);
-	char *getNext(void);
+	bool *getNext(void);
 	char *readOption(void);
 	char *readVal(void);
 	
 private:
 	void *m_pFile;
 	char *m_pFileName;
+	char *m_pString;
 	char *m_pOption;
 	char *m_pVal;
-	int m_Lenth;
+	int m_Length;
 	int m_Line;
+	int m_SepIndex;
 	bool m_bPermitted;
 };
 
