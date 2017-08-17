@@ -135,6 +135,9 @@ void ReadOptions::readVal(void)
 			continue;
 		memset(m_pVal, 0, m_Length*sizeof(char));
 		memcpy(m_pVal, &m_pString[i], m_Length);
+    char *p = strchr(m_pVal, '\n');
+    if(p != NULL)
+      *p = '\0';
 		break;
 	}
 }
