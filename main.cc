@@ -19,6 +19,10 @@ int main(int argc, char **argv)
 	LOG(INFO) << "height: " << std::atoi(val);
 	val = rp->read("age");
 	LOG(INFO) << "age: " << std::atoi(val);
+    val = rp->read("email");
+    LOG(INFO) << "email: " << val;
+    if(rp->matchSuffix(val, "com"))
+      LOG(INFO) << "emial has suffix of 'com'";
 	
 	if(NULL != rp)
 	{
